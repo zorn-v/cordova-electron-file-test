@@ -30,6 +30,7 @@ var app = {
         this.receivedEvent('deviceready');
 
         console.log('cordova.file', cordova.file);
+        console.log(cordova.file.dataDirectory);
         resolveLocalFileSystemURL(cordova.file.dataDirectory, entry => console.log(entry), err => console.error(err))
     },
 
