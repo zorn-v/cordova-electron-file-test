@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-electron": "^1.1.1",
-    "cordova-plugin-file": "/mnt/M.2/Develop/github/cordova-plugin-file/"
+    "cordova-plugin-file": "../github/cordova-plugin-file"
   },
   "cordova": {
     "plugins": {
