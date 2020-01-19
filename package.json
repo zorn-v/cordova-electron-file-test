@@ -5,6 +5,7 @@
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "main": "index.js",
   "scripts": {
+    "prepare": "rm -rf platforms plugins && npx cordova prepare",
     "electron": "cordova run electron --nobuild"
   },
   "keywords": [

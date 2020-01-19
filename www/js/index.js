@@ -28,6 +28,9 @@ var app = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
+
+        console.log('cordova.file', cordova.file);
+        resolveLocalFileSystemURL(cordova.file.dataDirectory, entry => console.log(entry), err => console.error(err))
     },
 
     // Update DOM on a Received Event
