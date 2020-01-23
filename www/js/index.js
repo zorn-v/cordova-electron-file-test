@@ -80,7 +80,12 @@ var app = {
                   const fileTransfer = new window.FileTransfer();
                   const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/www/img/logo.png';
                   fileTransfer.download(url, dataDir.toURL() + 'recursive/dir/test/logo.png',
-                      () => console.log(`Download "${url}" success`),
+                      () => {
+                          console.log(`Download "${url}" success`);
+                          dataDir.getDir('recursive', rmDir => {
+                              rmDir.removeRecursively(() => console.log('Recursive dir removed'), err => console.error(err));
+                          });
+                      },
                       err => console.error(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)
                   );
               })
