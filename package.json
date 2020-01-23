@@ -15,12 +15,14 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-electron": "^1.1.1",
-    "cordova-plugin-file": "../cordova-plugin-file"
+    "cordova-plugin-file": "../cordova-plugin-file",
+    "cordova-plugin-file-transfer": "^1.7.1"
   },
   "cordova": {
     "plugins": {
       "cordova-plugin-file": {},
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-file-transfer": {}
     },
     "platforms": [
       "electron"

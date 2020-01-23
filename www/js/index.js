@@ -33,6 +33,15 @@ const cdvFileErrors = [
   'PATH_EXISTS_ERR'
 ];
 
+const cdvFileTransferErrors = [
+  '',
+  'FILE_NOT_FOUND_ERR',
+  'INVALID_URL_ERR',
+  'CONNECTION_ERR',
+  'ABORT_ERR',
+  'NOT_MODIFIED_ERR',
+];
+
 function createDirRecursive(fsRoot, path) {
   return new Promise((resolve, reject) => {
     fsRoot.getDirectory(path, {create: true}, resolve, err => {
@@ -68,12 +77,12 @@ var app = {
             createDirRecursive(dataDir, 'recursive/dir/test')
               .then(rDir => {
                   console.log(rDir);
-                  /*const fileTransfer = new window.FileTransfer();
-                  const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/package.json';
-                  fileTransfer.download(url, dataDir.toURL() + dst,
-                    () => {console.log()},
-                    err => {--queueLength; reject(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)}
-                  );*/
+                  const fileTransfer = new window.FileTransfer();
+                  const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/www/img/logo.png';
+                  fileTransfer.download(url, dataDir.toURL() + 'recursive/dir/test/logo.png',
+                      () => console.log('Download "${url} success'),
+                      err => console.error(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)
+                  );
               })
 
             dataDir.getDirectory('test', {create: true}, dir => {
