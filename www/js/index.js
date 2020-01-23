@@ -92,7 +92,14 @@ var app = {
                         console.log(fileWriter);
                         fileWriter.onwriteend = function (evt) {
                             if (!evt.target.error) {
-                                console.log('SUCCESS', evt);
+                                console.log('Write SUCCESS', evt);
+                                entry.copyTo(dir, 'file-copy.txt', newFile => {
+                                    console.log('File copied', newFile);
+                                    entry.moveTo(die, 'file-move.txt',
+                                        movedFile => console.log('File moved', movedFile),
+                                        err => console.error(err)
+                                    );
+                                }, err => console.error(err));
                             } else {
                                 console.error(evt);
                             }
@@ -107,6 +114,7 @@ var app = {
 
             const dirReader = dataDir.createReader();
             dirReader.readEntries(entries => console.log('Dir entries', entries), err => console.error(err));
+
         }, err => console.error(err))
     },
 
