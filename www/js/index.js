@@ -30,8 +30,9 @@ var app = {
         this.receivedEvent('deviceready');
 
         console.log('cordova.file', cordova.file);
-        console.log(cordova.file.dataDirectory);
         resolveLocalFileSystemURL(cordova.file.dataDirectory, entry => console.log(entry), err => console.error(err))
+        resolveLocalFileSystemURL('cdvfile://localhost/persistent/some/file', entry => console.log(entry), err => console.error(err))
+        resolveLocalFileSystemURL('cdvfile://localhost/temporary/some/temp/file', entry => console.log(entry), err => console.error(err))
     },
 
     // Update DOM on a Received Event
