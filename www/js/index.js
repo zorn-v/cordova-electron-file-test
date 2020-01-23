@@ -16,6 +16,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+const cdvFileErrors = [
+  '',
+  'NOT_FOUND_ERR',
+  'SECURITY_ERR',
+  'ABORT_ERR',
+  'NOT_READABLE_ERR',
+  'ENCODING_ERR',
+  'NO_MODIFICATION_ALLOWED_ERR',
+  'INVALID_STATE_ERR',
+  'SYNTAX_ERR',
+  'INVALID_MODIFICATION_ERR',
+  'QUOTA_EXCEEDED_ERR',
+  'TYPE_MISMATCH_ERR',
+  'PATH_EXISTS_ERR'
+];
+
+function createDirRecursive(fsRoot, path) {
+  return new Promise((resolve, reject) => {
+    fsRoot.getDirectory(path, {create: true}, resolve, err => {
+      if (err.code != 12) {
+        reject(`Create dir "${path}" error: ${cdvFileErrors[err.code]}`);
+        return;
+      }
+      createDirRecursive(fsRoot, path.substring(0, path.lastIndexOf('/')))
+        .then(() => createDirRecursive(fsRoot, path))
+        .then(resolve)
+        .catch(reject);
+      });
+  });
+}
+
 var app = {
     // Application Constructor
     initialize: function() {
@@ -30,8 +62,20 @@ var app = {
         this.receivedEvent('deviceready');
 
         console.log('cordova.file', cordova.file);
-        resolveLocalFileSystemURL(cordova.file.dataDirectory, entry => {
-            console.log(entry.toURL());
+        resolveLocalFileSystemURL(cordova.file.dataDirectory, dataDir => {
+            console.log(dataDir.toURL());
+
+            createDirRecursive(dataDir, 'recursive/dir/test')
+              .then(rDir => {
+                  console.log(rDir);
+                  /*const fileTransfer = new window.FileTransfer();
+                  const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/package.json';
+                  fileTransfer.download(url, dataDir.toURL() + dst,
+                    () => {console.log()},
+                    err => {--queueLength; reject(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)}
+                  );*/
+              })
+            /*
             entry.getDirectory('test', {create: true}, dir => {
                 dir.getFile('file.txt', {create: true}, function writeFile(entry) {
                     entry.createWriter(function (fileWriter) {
@@ -51,6 +95,7 @@ var app = {
                     }, err => console.error(err));
                 }, err => console.error(err));
             }, err => console.error(err));
+            */
         }, err => console.error(err))
     },
 
