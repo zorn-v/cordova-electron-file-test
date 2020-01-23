@@ -104,6 +104,9 @@ var app = {
                     }, err => console.error(err));
                 }, err => console.error(err));
             }, err => console.error(err));
+
+            const dirReader = dataDir.createReader();
+            dirReader.readEntries(entries => console.log('Dir entries', entries), err => console.error(err));
         }, err => console.error(err))
     },
 
