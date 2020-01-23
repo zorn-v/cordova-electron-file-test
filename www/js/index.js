@@ -32,7 +32,25 @@ var app = {
         console.log('cordova.file', cordova.file);
         resolveLocalFileSystemURL(cordova.file.dataDirectory, entry => {
             console.log(entry.toURL());
-            entry.getDirectory('test', {create: true}, entry => console.log(entry), err => console.error(err));
+            entry.getDirectory('test', {create: true}, dir => {
+                dir.getFile('file.txt', {create: true}, function writeFile(entry) {
+                    entry.createWriter(function (fileWriter) {
+                        fileWriter.onwriteend = function (evt) {
+                            if (!evt.target.error) {
+                                if (successCallback) {
+                                    console.log('SUCCESS', entry);
+                                }
+                            } else {
+                                console.error(evt);
+                            }
+                        };
+                        fileWriter.onerror = function (err) {
+                            console.error('fileWriter err', err);
+                        };
+                        fileWriter.write('TEST');
+                    }, err => console.error(err));
+                }, err => console.error(err));
+            }, err => console.error(err));
         }, err => console.error(err))
     },
 
