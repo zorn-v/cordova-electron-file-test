@@ -100,7 +100,7 @@ var app = {
                                 console.log('Write SUCCESS', evt);
                                 entry.copyTo(dir, 'file-copy.txt', newFile => {
                                     console.log('File copied', newFile);
-                                    entry.moveTo(die, 'file-move.txt',
+                                    entry.moveTo(dir, 'file-move.txt',
                                         movedFile => console.log('File moved', movedFile),
                                         err => console.error(err)
                                     );
