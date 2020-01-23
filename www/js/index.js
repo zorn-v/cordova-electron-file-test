@@ -79,12 +79,11 @@ var app = {
             dataDir.getDirectory('test', {create: true}, dir => {
                 dir.getFile('file.txt', {create: true}, function writeFile(entry) {
                     console.log(entry);
-                    /*entry.createWriter(function (fileWriter) {
+                    entry.createWriter(function (fileWriter) {
+                        console.log(fileWriter);
                         fileWriter.onwriteend = function (evt) {
                             if (!evt.target.error) {
-                                if (successCallback) {
-                                    console.log('SUCCESS', entry);
-                                }
+                                console.log('SUCCESS', evt);
                             } else {
                                 console.error(evt);
                             }
@@ -93,7 +92,7 @@ var app = {
                             console.error('fileWriter err', err);
                         };
                         fileWriter.write('TEST');
-                    }, err => console.error(err));*/
+                    }, err => console.error(err));
                 }, err => console.error(err));
             }, err => console.error(err));
         }, err => console.error(err))
