@@ -82,7 +82,7 @@ var app = {
                   fileTransfer.download(url, dataDir.toURL() + 'recursive/dir/test/logo.png',
                       () => {
                           console.log(`Download "${url}" success`);
-                          dataDir.getDir('recursive', rmDir => {
+                          dataDir.getDirectory('recursive', {}, rmDir => {
                               rmDir.removeRecursively(() => console.log('Recursive dir removed'), err => console.error(err));
                           });
                       },
