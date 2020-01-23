@@ -75,10 +75,11 @@ var app = {
                     err => {--queueLength; reject(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)}
                   );*/
               })
-            /*
-            entry.getDirectory('test', {create: true}, dir => {
+
+            dataDir.getDirectory('test', {create: true}, dir => {
                 dir.getFile('file.txt', {create: true}, function writeFile(entry) {
-                    entry.createWriter(function (fileWriter) {
+                    console.log(entry);
+                    /*entry.createWriter(function (fileWriter) {
                         fileWriter.onwriteend = function (evt) {
                             if (!evt.target.error) {
                                 if (successCallback) {
@@ -92,10 +93,9 @@ var app = {
                             console.error('fileWriter err', err);
                         };
                         fileWriter.write('TEST');
-                    }, err => console.error(err));
+                    }, err => console.error(err));*/
                 }, err => console.error(err));
             }, err => console.error(err));
-            */
         }, err => console.error(err))
     },
 
