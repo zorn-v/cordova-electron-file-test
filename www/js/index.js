@@ -32,7 +32,7 @@ var app = {
         console.log('cordova.file', cordova.file);
         resolveLocalFileSystemURL(cordova.file.dataDirectory, entry => {
             console.log(entry.toURL());
-            entry.getDirectory(entry.toURL() + 'test', {create: true});
+            entry.getDirectory('test', {create: true}, entry => console.log(entry), err => console.error(err));
         }, err => console.error(err))
     },
 
