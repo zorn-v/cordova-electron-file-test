@@ -72,11 +72,11 @@ var app = {
 
         console.log('cordova.file', cordova.file);
         resolveLocalFileSystemURL(cordova.file.dataDirectory, dataDir => {
-            console.log(dataDir.toURL());
+            console.log('dataDirURL', dataDir.toURL());
 
             createDirRecursive(dataDir, 'recursive/dir/test')
               .then(rDir => {
-                  console.log(rDir);
+                  console.log('Recursive dir', rDir);
                   const fileTransfer = new window.FileTransfer();
                   const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/www/img/logo.png';
                   fileTransfer.download(url, dataDir.toURL() + 'recursive/dir/test/logo.png',
@@ -92,7 +92,7 @@ var app = {
 
             dataDir.getDirectory('test', {create: true}, dir => {
                 dir.getFile('file.txt', {create: true}, function writeFile(entry) {
-                    console.log(entry);
+                    console.log('file.txt entry', entry);
                     entry.createWriter(function (fileWriter) {
                         console.log(fileWriter);
                         fileWriter.onwriteend = function (evt) {
