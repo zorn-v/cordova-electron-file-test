@@ -119,13 +119,15 @@ var app = {
                     const movedFile = await cdvPromise(entry.moveTo.bind(entry))(dir, 'file-move.txt')
                     console.log('File moved', movedFile)
 
+                    const file = new File(movedFile.name, movedFile.fullPath, '', new Date(), 4);
+
                     const fileReader = new FileReader();
                     console.log(fileReader);
 
                     new Promise((resolve, reject) => {
                         fileReader.onload = data => resolve(data)
                         fileReader.onerror = err => reject(err)
-                        fileReader.readAsText(movedFile)
+                        fileReader.readAsText(file)
                     })
                       .then(data => console.log('Readed FILE data !!!', data))
                       .catch(err => console.error('fileReader err', err))
