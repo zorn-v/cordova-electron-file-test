@@ -109,6 +109,7 @@ var app = {
 
             const fileWriter = await cdvPromise(entry.createWriter.bind(entry))()
             console.log(fileWriter);
+
             fileWriter.onwriteend = async function (evt) {
                 if (!evt.target.error) {
                     console.log('Write SUCCESS', evt);
@@ -117,6 +118,17 @@ var app = {
                     console.log('File copied', newFile);
                     const movedFile = await cdvPromise(entry.moveTo.bind(entry))(dir, 'file-move.txt')
                     console.log('File moved', movedFile)
+
+                    const fileReader = new FileReader();
+                    console.log(fileReader);
+
+                    new Promise((resolve, reject) => {
+                        fileReader.onload = data => resolve(data)
+                        fileReader.onerror = err => reject(err)
+                        fileReader.readAsText(movedFile)
+                    })
+                      .then(data => console.log('Readed FILE data !!!', data))
+                      .catch(err => console.error('fileReader err', err))
                 } else {
                     console.error(evt);
                 }
