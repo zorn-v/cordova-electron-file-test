@@ -70,6 +70,18 @@ var app = {
     onDeviceReady: function() {
         this.receivedEvent('deviceready');
 
+        function cdvPromise(cdvFunc) {
+          return function () {
+            return new Promise((resolve, reject) => {
+              cdvFunc(...arguments, resolve, reject);
+            })
+          }
+        }
+
+        cdvPromise(resolveLocalFileSystemURL)(cordova.file.dataDirectory)
+          .then(dataDir => console.log('Data dir entry from promise', dataDir))
+          .catch(err => console.error(err))
+
         console.log('cordova.file', cordova.file);
         resolveLocalFileSystemURL(cordova.file.dataDirectory, dataDir => {
             console.log('dataDirURL', dataDir.toURL());
