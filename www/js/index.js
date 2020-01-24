@@ -129,7 +129,31 @@ var app = {
                         fileReader.onerror = err => reject(err)
                         fileReader.readAsText(file)
                     })
-                      .then(data => console.log('Readed FILE data !!!', data))
+                      .then(data => {
+                          console.log('Readed FILE data text !!!', data)
+                          return new Promise((resolve, reject) => {
+                              fileReader.onload = e => resolve(e.target.result)
+                              fileReader.onerror = err => reject(err)
+                              fileReader.readAsDataURL(file)
+                          })
+                      })
+                      .then(data => {
+                          console.log('Readed FILE data URL !!!', data)
+                          return new Promise((resolve, reject) => {
+                              fileReader.onload = e => resolve(e.target.result)
+                              fileReader.onerror = err => reject(err)
+                              fileReader.readAsArrayBuffer(file)
+                          })
+                      })
+                      .then(data => {
+                          console.log('Readed FILE data ArrayBuffer !!!', data)
+                          return new Promise((resolve, reject) => {
+                              fileReader.onload = e => resolve(e.target.result)
+                              fileReader.onerror = err => reject(err)
+                              fileReader.readAsBinaryString(file)
+                          })
+                      })
+                      .then(data => console.log('Readed FILE data BinaryString !!!', data))
                       .catch(err => console.error('fileReader err', err))
                 } else {
                     console.error(evt);
