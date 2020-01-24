@@ -78,61 +78,59 @@ var app = {
           }
         }
 
-        cdvPromise(resolveLocalFileSystemURL)(cordova.file.dataDirectory)
-          .then(dataDir => console.log('Data dir entry from promise', dataDir))
-          .catch(err => console.error(err))
-
         console.log('cordova.file', cordova.file);
-        resolveLocalFileSystemURL(cordova.file.dataDirectory, dataDir => {
-            console.log('dataDirURL', dataDir.toURL());
+        cdvPromise(resolveLocalFileSystemURL)(cordova.file.dataDirectory)
+          .then(dataDir => {
+              console.log('dataDirURL', dataDir.toURL());
 
-            createDirRecursive(dataDir, 'recursive/dir/test')
-              .then(rDir => {
-                  console.log('Recursive dir', rDir);
-                  const fileTransfer = new window.FileTransfer();
-                  const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/www/img/logo.png';
-                  fileTransfer.download(url, dataDir.toURL() + 'recursive/dir/test/logo.png',
-                      () => {
-                          console.log(`Download "${url}" success`);
-                          dataDir.getDirectory('recursive', {}, rmDir => {
-                              rmDir.removeRecursively(() => console.log('Recursive dir removed'), err => console.error(err));
-                          });
-                      },
-                      err => console.error(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)
-                  );
-              })
+              const dirReader = dataDir.createReader();
+              dirReader.readEntries(entries => console.log('Dir entries', entries), err => console.error(err));
 
-            dataDir.getDirectory('test', {create: true}, dir => {
-                dir.getFile('file.txt', {create: true}, function writeFile(entry) {
-                    console.log('file.txt entry', entry);
-                    entry.createWriter(function (fileWriter) {
-                        console.log(fileWriter);
-                        fileWriter.onwriteend = function (evt) {
-                            if (!evt.target.error) {
-                                console.log('Write SUCCESS', evt);
-                                entry.copyTo(dir, 'file-copy.txt', newFile => {
-                                    console.log('File copied', newFile);
-                                    entry.moveTo(dir, 'file-move.txt',
-                                        movedFile => console.log('File moved', movedFile),
-                                        err => console.error(err)
-                                    );
-                                }, err => console.error(err));
-                            } else {
-                                console.error(evt);
-                            }
-                        };
-                        fileWriter.onerror = function (err) {
-                            console.error('fileWriter err', err);
-                        };
-                        fileWriter.write('TEST');
-                    }, err => console.error(err));
-                }, err => console.error(err));
-            }, err => console.error(err));
+              createDirRecursive(dataDir, 'recursive/dir/test')
+                .then(rDir => {
+                    console.log('Recursive dir', rDir);
+                    const fileTransfer = new window.FileTransfer();
+                    const url = 'https://raw.githubusercontent.com/zorn-v/cordova-electron-file-test/master/www/img/logo.png';
+                    fileTransfer.download(url, dataDir.toURL() + 'recursive/dir/test/logo.png',
+                        () => {
+                            console.log(`Download "${url}" success`);
+                            dataDir.getDirectory('recursive', {}, rmDir => {
+                                rmDir.removeRecursively(() => console.log('Recursive dir removed'), err => console.error(err));
+                            });
+                        },
+                        err => console.error(`Download "${url}" error: ${cdvFileTransferErrors[err.code]}`)
+                    );
+                })
 
-            const dirReader = dataDir.createReader();
-            dirReader.readEntries(entries => console.log('Dir entries', entries), err => console.error(err));
+                return cdvPromise(dataDir.getDirectory.bind(dataDir))('test', {create: true})
+          })
+          .then(dir => cdvPromise(dir.getFile.bind(dir))('file.txt', {create: true}))
+          .then(entry => {
+              console.log('file.txt entry', entry);
 
-        }, err => console.error(err))
+              entry.createWriter(function (fileWriter) {
+                  console.log(fileWriter);
+                  fileWriter.onwriteend = function (evt) {
+                      if (!evt.target.error) {
+                          console.log('Write SUCCESS', evt);
+                          entry.copyTo(dir, 'file-copy.txt', newFile => {
+                              console.log('File copied', newFile);
+                              entry.moveTo(dir, 'file-move.txt',
+                                  movedFile => console.log('File moved', movedFile),
+                                  err => console.error(err)
+                              );
+                          }, err => console.error(err));
+                      } else {
+                          console.error(evt);
+                      }
+                  };
+                  fileWriter.onerror = function (err) {
+                      console.error('fileWriter err', err);
+                  };
+                  fileWriter.write('TEST');
+              }, err => console.error(err));
+          })
+          .catch(err => console.error(err))
     },
 
     // Update DOM on a Received Event
