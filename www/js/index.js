@@ -125,7 +125,7 @@ var app = {
                     console.log(fileReader);
 
                     new Promise((resolve, reject) => {
-                        fileReader.onload = data => resolve(data)
+                        fileReader.onload = e => resolve(e.target.result)
                         fileReader.onerror = err => reject(err)
                         fileReader.readAsText(file)
                     })
