@@ -79,9 +79,14 @@ var app = {
         }
 
         console.log('cordova.file', cordova.file);
-        resolveLocalFileSystemURL('cdvfile://localhost/application/', appDir => console.log('Application dir by cdvfile://', appDir))
         (async () => {
           try {
+            resolveLocalFileSystemURL(
+                'cdvfile://localhost/application/',
+                appDir => console.log('Application dir by cdvfile://', appDir),
+                err => console.error(err)
+            )
+
             const dataDir = await cdvPromise(resolveLocalFileSystemURL)(cordova.file.dataDirectory)
             console.log('dataDirURL', dataDir.toURL());
 
