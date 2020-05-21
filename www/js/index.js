@@ -125,6 +125,15 @@ var app = {
                     const movedFile = await cdvPromise(entry.moveTo.bind(entry))(dir, 'file-move.txt')
                     console.log('File moved', movedFile)
 
+                    const truncWriter = await cdvPromise(newFile.createWriter.bind(newFile))()
+                    truncWriter.onwriteend = function (evt) {
+                      console.log('TRUNCATE success ', evt);
+                    }
+                    truncWriter.onerror = function (err) {
+                      console.error('TRUNCATE err', err);
+                    };
+                    truncWriter.truncate(2);
+
                     const file = new File(movedFile.name, movedFile.fullPath, '', new Date(), 4);
 
                     const fileReader = new FileReader();
