@@ -82,7 +82,7 @@ var app = {
         (async () => {
           try {
             resolveLocalFileSystemURL(
-                'cdvfile://localhost/application/index.html',
+                'cdvfile://localhost/application/www/index.html',
                 appPath => console.log('Application path by cdvfile://', appPath),
                 err => console.error(err)
             )
