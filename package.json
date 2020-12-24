@@ -29,7 +29,7 @@
     ]
   },
   "devDependencies": {
-    "cordova": "^9.0.0",
+    "cordova": "^10.0.0",
     "cordova-plugin-whitelist": "^1.3.4"
   }
 }
